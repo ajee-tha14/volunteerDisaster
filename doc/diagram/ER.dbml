@@ -1,0 +1,122 @@
+Table Users {
+  user_id int [pk, increment]
+  name varchar(100) [not null]
+  email varchar(150) [not null, unique]
+  password varchar(255) [not null]
+  role varchar(30) [not null]
+}
+
+Table Volunteers {
+  volunteer_id int [pk, increment]
+  user_id int [not null, unique]
+  skills varchar(255)
+  location varchar(255)
+  availability varchar(100)
+  experience int
+  verification_status varchar(30)
+}
+
+Table Disasters {
+  disaster_id int [pk, increment]
+  disaster_type varchar(100) [not null]
+  disaster_name varchar(150) [not null]
+  start_date date
+  description text
+  status varchar(30)
+}
+
+Table Affected_Areas {
+  area_id int [pk, increment]
+  disaster_id int [not null]
+  location varchar(255) [not null]
+  population_affected int
+  priority_level varchar(30)
+  required_support text
+}
+
+Table Relief_Tasks {
+  task_id int [pk, increment]
+  area_id int [not null]
+  task_name varchar(150) [not null]
+  required_skill varchar(150)
+  priority varchar(30)
+  status varchar(30)
+}
+
+Table Task_Assignments {
+  assignment_id int [pk, increment]
+  task_id int [not null]
+  volunteer_id int [not null]
+  assigned_date datetime
+  accepted_date datetime
+  completion_date datetime
+}
+
+Table Resources {
+  resource_id int [pk, increment]
+  resource_name varchar(150) [not null]
+  quantity_available int
+  resource_type varchar(100)
+  storage_location varchar(255)
+}
+
+Table Resource_Requests {
+  request_id int [pk, increment]
+  area_id int [not null]
+  resource_id int [not null]
+  quantity_required int
+  request_status varchar(30)
+}
+
+Table SOS_Alerts {
+  alert_id int [pk, increment]
+  volunteer_id int [not null]
+  location varchar(255) [not null]
+  alert_time datetime
+  alert_status varchar(30)
+}
+
+Table Relief_Reports {
+  report_id int [pk, increment]
+  task_id int [not null]
+  volunteer_id int [not null]
+  description text
+  submitted_date datetime
+  verification_status varchar(30)
+}
+
+Table Notifications {
+  notification_id int [pk, increment]
+  user_id int [not null]
+  message text
+  notification_type varchar(50)
+  created_at datetime
+  read_status boolean
+}
+
+
+// =========================
+// Relationships
+// =========================
+
+Ref: Users.user_id - Volunteers.user_id
+
+Ref: Disasters.disaster_id < Affected_Areas.disaster_id
+
+Ref: Affected_Areas.area_id < Relief_Tasks.area_id
+
+Ref: Relief_Tasks.task_id < Task_Assignments.task_id
+
+Ref: Volunteers.volunteer_id < Task_Assignments.volunteer_id
+
+Ref: Affected_Areas.area_id < Resource_Requests.area_id
+
+Ref: Resources.resource_id < Resource_Requests.resource_id
+
+Ref: Volunteers.volunteer_id < SOS_Alerts.volunteer_id
+
+Ref: Relief_Tasks.task_id < Relief_Reports.task_id
+
+Ref: Volunteers.volunteer_id < Relief_Reports.volunteer_id
+
+Ref: Users.user_id < Notifications.user_id
