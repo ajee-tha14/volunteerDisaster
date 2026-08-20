@@ -1,0 +1,32 @@
+flowchart TD
+    A[Admin] --> L[Login]
+    V[Volunteer] --> L
+    C[Relief Coordinator] --> L
+
+    L --> D[Disaster Management]
+    L --> T[Relief Task Management]
+    L --> R[Resource Management]
+
+    D --> AA[Affected Areas]
+    AA --> P[Priority Scoring]
+    P --> T
+
+    T --> M[Volunteer Matching]
+    M --> V
+    V --> S[Task Status]
+    S --> C
+
+    R --> RM[Resource Matching]
+    AA --> RM
+
+    V --> SOS[SOS Alert]
+    SOS --> A
+
+    T --> N[Notifications & Reports]
+    R --> N
+
+    D --> DB[(MySQL)]
+    T --> DB
+    R --> DB
+    V --> DB
+    C --> DB
