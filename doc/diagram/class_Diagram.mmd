@@ -1,0 +1,139 @@
+classDiagram
+
+class User {
+    +int user_id
+    +String name
+    +String email
+    +String password
+    +String role
+    +register()
+    +login()
+    +updateProfile()
+}
+
+class Volunteer {
+    +int volunteer_id
+    +int user_id
+    +String skills
+    +String location
+    +String availability
+    +String experience
+    +String verification_status
+    +acceptTask()
+    +updateTaskProgress()
+    +sendSOS()
+    +submitReport()
+}
+
+class Disaster {
+    +int disaster_id
+    +String disaster_type
+    +String disaster_name
+    +Date start_date
+    +String description
+    +String status
+    +addDisaster()
+    +updateDisaster()
+    +manageDisaster()
+}
+
+class AffectedArea {
+    +int area_id
+    +int disaster_id
+    +String location
+    +int population_affected
+    +String priority_level
+    +String required_support
+    +calculatePriority()
+    +updateArea()
+}
+
+class ReliefTask {
+    +int task_id
+    +int area_id
+    +String task_name
+    +String required_skill
+    +String priority
+    +String status
+    +createTask()
+    +assignTask()
+    +updateStatus()
+}
+
+class TaskAssignment {
+    +int assignment_id
+    +int task_id
+    +int volunteer_id
+    +Date assigned_date
+    +Date accepted_date
+    +Date completion_date
+    +assignVolunteer()
+    +acceptTask()
+    +completeTask()
+}
+
+class Resource {
+    +int resource_id
+    +String resource_name
+    +int quantity_available
+    +String resource_type
+    +String storage_location
+    +addResource()
+    +updateQuantity()
+    +checkAvailability()
+}
+
+class ResourceRequest {
+    +int request_id
+    +int area_id
+    +int resource_id
+    +int quantity_required
+    +String request_status
+    +createRequest()
+    +updateRequest()
+    +checkShortage()
+}
+
+class SOSAlert {
+    +int alert_id
+    +int volunteer_id
+    +String location
+    +DateTime alert_time
+    +String alert_status
+    +sendAlert()
+    +updateAlertStatus()
+}
+
+class ReliefReport {
+    +int report_id
+    +int task_id
+    +int volunteer_id
+    +String description
+    +Date submitted_date
+    +String verification_status
+    +submitReport()
+    +verifyReport()
+}
+
+class Notification {
+    +int notification_id
+    +int user_id
+    +String message
+    +String notification_type
+    +DateTime created_at
+    +Boolean read_status
+    +sendNotification()
+    +markAsRead()
+}
+
+User "1" -- "0..1" Volunteer : has profile
+Disaster "1" -- "1..*" AffectedArea : contains
+AffectedArea "1" -- "1..*" ReliefTask : has
+ReliefTask "1" -- "1..*" TaskAssignment : assigned through
+Volunteer "1" -- "0..*" TaskAssignment : receives
+AffectedArea "1" -- "0..*" ResourceRequest : requests
+Resource "1" -- "0..*" ResourceRequest : requested
+Volunteer "1" -- "0..*" SOSAlert : sends
+ReliefTask "1" -- "0..*" ReliefReport : generates
+Volunteer "1" -- "0..*" ReliefReport : submits
+User "1" -- "0..*" Notification : receives
